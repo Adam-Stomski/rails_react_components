@@ -33,7 +33,17 @@ module RailsReactComponents
         html_options[name] = value
       end
 
-      %w(prerender trace replay_console raise_on_prerender_error).each do |method|
+      %w(prerender raise_on_prerender_error).each do |method|
+        define_method method do
+          instance_variable_set("@_#{method}", true)
+        end
+
+        define_method "#{method}?" do
+          instance_variable_get("@_#{method}") || RailsReactComponents.send(method)
+        end
+      end
+
+      %w(trace replay_console).each do |method|
         define_method method do
           instance_variable_set("@_#{method}", true)
         end

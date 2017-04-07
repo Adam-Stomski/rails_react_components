@@ -7,18 +7,23 @@ RSpec.describe "Basic component" do
     prop :email, on: :user
     prop :nick, delegate: :user # alias
 
-    prop :is_ready, as: :userReady, include_blank: false
+    prop :is_ready, as: :user_ready, include_blank: false
+    prop :this_will_be_camelized
 
     def name
       "Franek Kimono"
     end
 
     def is_ready
-      ready? ? "yes" : ""
+      ready? ? 1 : ""
     end
 
     def ready?
       true
+    end
+
+    def this_will_be_camelized
+      "camelized!"
     end
   end
 
@@ -30,7 +35,8 @@ RSpec.describe "Basic component" do
           name: "Franek Kimono",
           email: "user@example.com",
           nick: "Rocky",
-          userReady: "yes"
+          user_ready: 1,
+          thisWillBeCamelized: "camelized!"
         }
       )
     end
@@ -42,6 +48,18 @@ RSpec.describe "Basic component" do
 
         expect(component.props).to_not have_key(:userReady)
         expect(component.props).to_not have_key(:is_ready)
+      end
+    end
+
+    context "when camelize_props is false" do
+      it "does not camelize prop names" do
+        RailsReactComponents.config do |config|
+          config.camelize_props = false
+        end
+        component = BasicComponent.new(user: user)
+
+        expect(component.props).to_not have_key(:thisWillBeCamelized)
+        expect(component.props).to have_key(:this_will_be_camelized)
       end
     end
   end

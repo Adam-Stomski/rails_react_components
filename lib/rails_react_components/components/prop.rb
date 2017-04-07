@@ -1,16 +1,16 @@
 module RailsReactComponents
   module Components
     class Prop
-      def initialize(prop_name, options)
-        @prop_name = prop_name.to_sym
+      def initialize(method_name, options)
+        @method_name = method_name.to_sym
         @options = options
       end
 
       def build(component)
         if on.present?
-          component.send(on).send(prop_name)
+          component.send(on).send(method_name)
         else
-          component.send(prop_name)
+          component.send(method_name)
         end
       end
 
@@ -19,15 +19,25 @@ module RailsReactComponents
       end
 
       def name
-        @name ||= options.fetch(:as, nil)&.to_sym || prop_name
+        if as.present?
+          as
+        elsif RailsReactComponents.camelize_props
+          method_name.to_s.camelize(:lower).to_sym
+        else
+          method_name
+        end
       end
 
       private
 
-      attr_reader :options, :prop_name
+      attr_reader :options, :method_name
 
       def on
-        @on ||= options[:on] || options[:delegate]
+        options[:on] || options[:delegate]
+      end
+
+      def as
+        options.fetch(:as, nil)&.to_sym
       end
     end
   end
