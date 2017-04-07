@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "components/prop"
 require_relative "components/dsl"
 
@@ -18,7 +20,7 @@ module RailsReactComponents
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      _methods.has_key?(method_name.to_sym) || super
+      _methods.key?(method_name.to_sym) || super
     end
 
     def component_options

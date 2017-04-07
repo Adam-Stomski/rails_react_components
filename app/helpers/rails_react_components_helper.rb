@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsReactComponentsHelper
   def render_react_component(klass, options = {})
     component = klass.new(options)

@@ -1,0 +1,25 @@
+AllCops:
+  Exclude:
+    - spec/**/*
+    - bin/**/*
+    - Gemfile
+    - Rakefile
+    - rails_react_components.gemspec
+  TargetRubyVersion: 2.4
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  SupportedStyles:
+    - double_quotes
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+    '%i': '()'
+    '%I': '()'
+    '%r': '{}'
+    '%w': '()'
+    '%W': '()'
+Metrics/LineLength:
+  Max: 100
