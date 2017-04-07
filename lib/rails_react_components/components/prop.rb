@@ -1,18 +1,16 @@
 module RailsReactComponents
   module Components
     class Prop
-      attr_reader :name
-
-      def initialize(name, options)
-        @name = name.to_sym
+      def initialize(prop_name, options)
+        @prop_name = prop_name.to_sym
         @options = options
       end
 
       def build(component)
         if on.present?
-          component.send(on).send(name)
+          component.send(on).send(prop_name)
         else
-          component.send(name)
+          component.send(prop_name)
         end
       end
 
@@ -20,9 +18,13 @@ module RailsReactComponents
         options.fetch(:include_blank, true)
       end
 
+      def name
+        @name ||= options.fetch(:as, nil)&.to_sym || prop_name
+      end
+
       private
 
-      attr_reader :options
+      attr_reader :options, :prop_name
 
       def on
         @on ||= options[:on] || options[:delegate]

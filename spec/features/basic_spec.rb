@@ -7,7 +7,7 @@ RSpec.describe "Basic component" do
     prop :email, on: :user
     prop :nick, delegate: :user # alias
 
-    prop :is_ready, include_blank: false
+    prop :is_ready, as: :userReady, include_blank: false
 
     def name
       "Franek Kimono"
@@ -30,7 +30,7 @@ RSpec.describe "Basic component" do
           name: "Franek Kimono",
           email: "user@example.com",
           nick: "Rocky",
-          is_ready: "yes"
+          userReady: "yes"
         }
       )
     end
@@ -39,6 +39,8 @@ RSpec.describe "Basic component" do
       it "does not return it in props" do
         component = BasicComponent.new(user: user)
         allow(component).to receive(:ready?) { false }
+
+        expect(component.props).to_not have_key(:userReady)
         expect(component.props).to_not have_key(:is_ready)
       end
     end
