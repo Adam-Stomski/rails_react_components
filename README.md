@@ -1,6 +1,8 @@
 # RailsReactComponents
 
-Component objects for Rails and React
+[![Build Status](https://travis-ci.org/Adam-Stomski/rails_react_components.svg?branch=master)](https://travis-ci.org/Adam-Stomski/rails_react_components)
+
+Component objects for Rails and React with `react_on_rails`
 
 ```ruby
 # component class
@@ -8,6 +10,7 @@ class MyComponent < RailsReactComponents::Component
   prop :name
   prop :email, on: :user
   prop :is_ready
+  prop :received_email, as: :got_email
 
   def name
     "My name is Rails Component"
@@ -16,6 +19,10 @@ class MyComponent < RailsReactComponents::Component
   def is_ready
     user.ready?
   end
+
+  def received_email
+    false
+  end
 end
 
 # in view this can run:
@@ -23,7 +30,8 @@ end
 #   props: { 
 #     name: "My name is Rails Component",
 #     email: "user@example.com",
-#     is_ready: true
+#     isReady: true,
+#     got_email: false
 #   }
 # )
 render_react_component MyComponent, user: current_user 
@@ -33,7 +41,7 @@ render_react_component MyComponent, user: current_user
 
 - [ ] - nested props
 - [ ] - Rspec matchers
-- [ ] - configuration (snake_case methods for camelCase props etc)
+- [x] - configuration (snake_case methods for camelCase props etc)
 
 ## Installation
 
@@ -52,6 +60,19 @@ And then execute:
 Or install it yourself as:
 
     $ gem install rails_react_components
+
+## Configuration
+
+You can add initializer (these are defaults):
+
+```ruby
+  RailsReactComponents.config do |config|
+    config.camelize_props = true # method :some_method will end up someMethod prop
+                                 # when true, only way to prevent this is using prop as: option
+    config.prerender = nil # set global prerender
+    config.raise_on_prerender_error = nil # set global raise_on_prerender_error
+  end
+```
 
 ## Usage
 
